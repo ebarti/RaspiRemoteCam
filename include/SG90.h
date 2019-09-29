@@ -5,14 +5,9 @@
 
 #include <stdint.h>
 
-#ifdef __cplusplus // C++ compatibility
-extern "C"{
-    #include <pigpio.h>
-}
-#else // #ifdef __cplusplus -- C compatibility
-#include <pigpio.h>
+#ifndef __cplusplus // C++ compatibility
 extern "C++"{
-#endif //#ifdef __cplusplus
+#endif //#ifndef __cplusplus
 
 #define operatingFreq = 50.0
 #define minPulse = 1000.0
