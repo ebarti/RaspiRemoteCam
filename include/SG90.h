@@ -28,13 +28,13 @@ public:
     sg90ctl(int iGPIOidx);
     ~sg90ctl();
 
-    int updateSettings(int frequency, int minAnglePulseWidth, int maxAnglePulseWidth))
+    // All return codes are = 1 if succeeded
+    int updateSettings(int frequency, int minAnglePulseWidth, int maxAnglePulseWidth);
     int getGPIOIdx();
     int setTargetLocation(int iAngle);
     int getCurrentLocation();
+    int moveTo(bool direction /* Zero = Left, One = Right */);
 
-
-    void setGPIOinterlock();
     // Data members
 private:
     int GPIOidx, freq, minW, maxW;
