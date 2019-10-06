@@ -5,10 +5,10 @@ project( RaspiRemoteCam )
 # flags
 
 # include files
-include_directories( ./include ./src ./libs/pigpio/include )
+include_directories( ./include ./src/servoctl/LocalInterfaces ./libs/pigpio/include )
 
 # target
-add_executable( TheProgram ./src/RaspiRemoteCam.cpp )
+add_executable( TheProgram ./src/core/RaspiRemoteCam.cpp ./src/servoctl/SG90.cpp)
 
 
 #libs

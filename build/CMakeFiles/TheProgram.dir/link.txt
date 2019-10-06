@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/TheProgram.dir/src/core/RaspiRemoteCam.cpp.o CMakeFiles/TheProgram.dir/src/servoctl/SG90.cpp.o  -o TheProgram -Wl,-rpath,/home/pi/devel/RaspiRemoteCam/libs/pigpio ../libs/pigpio/libpigpio.so 

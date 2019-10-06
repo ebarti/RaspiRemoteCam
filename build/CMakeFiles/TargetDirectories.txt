@@ -1,0 +1,3 @@
+/home/pi/devel/RaspiRemoteCam/build/CMakeFiles/rebuild_cache.dir
+/home/pi/devel/RaspiRemoteCam/build/CMakeFiles/TheProgram.dir
+/home/pi/devel/RaspiRemoteCam/build/CMakeFiles/edit_cache.dir

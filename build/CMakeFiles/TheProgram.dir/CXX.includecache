@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+.././src/servoctl/LocalInterfaces/SG90.h
+stdint.h
+-
+
+/home/pi/devel/RaspiRemoteCam/src/servoctl/SG90.cpp
+SG90.h
+/home/pi/devel/RaspiRemoteCam/src/servoctl/SG90.h
+pigpio.h
+-
+pigpio.h
+-
+
