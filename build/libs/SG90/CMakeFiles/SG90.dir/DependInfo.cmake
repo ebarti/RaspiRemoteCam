@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/pi/devel/RaspiRemoteCam/src/core/RaspiRemoteCam.cpp" "/home/pi/devel/RaspiRemoteCam/build/CMakeFiles/TheProgram.dir/src/core/RaspiRemoteCam.cpp.o"
+  "/home/pi/devel/RaspiRemoteCam/libs/SG90/src/SG90.cpp" "/home/pi/devel/RaspiRemoteCam/build/libs/SG90/CMakeFiles/SG90.dir/src/SG90.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -14,11 +14,12 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   ".././src"
   ".././libs/pigpio/include"
   ".././libs/SG90/include"
+  "../libs/SG90/./include"
+  "../libs/SG90/./src"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/pi/devel/RaspiRemoteCam/build/libs/SG90/CMakeFiles/SG90.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

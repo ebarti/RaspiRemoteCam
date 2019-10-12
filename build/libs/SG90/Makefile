@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/devel/RaspiRemoteCam/build/CMakeFiles /home/pi/devel/RaspiRemoteCam/build/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
+	cd /home/pi/devel/RaspiRemoteCam/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/pi/devel/RaspiRemoteCam/build/CMakeFiles /home/pi/devel/RaspiRemoteCam/build/libs/SG90/CMakeFiles/progress.marks
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f CMakeFiles/Makefile2 libs/SG90/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/devel/RaspiRemoteCam/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f CMakeFiles/Makefile2 libs/SG90/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,71 +97,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f CMakeFiles/Makefile2 libs/SG90/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f CMakeFiles/Makefile2 libs/SG90/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/pi/devel/RaspiRemoteCam/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named TheProgram
+# Convenience name for target.
+libs/SG90/CMakeFiles/SG90.dir/rule:
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f CMakeFiles/Makefile2 libs/SG90/CMakeFiles/SG90.dir/rule
+.PHONY : libs/SG90/CMakeFiles/SG90.dir/rule
 
-# Build rule for target.
-TheProgram: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 TheProgram
-.PHONY : TheProgram
+# Convenience name for target.
+SG90: libs/SG90/CMakeFiles/SG90.dir/rule
 
-# fast build rule for target.
-TheProgram/fast:
-	$(MAKE) -f CMakeFiles/TheProgram.dir/build.make CMakeFiles/TheProgram.dir/build
-.PHONY : TheProgram/fast
-
-#=============================================================================
-# Target rules for targets named SG90
-
-# Build rule for target.
-SG90: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 SG90
 .PHONY : SG90
 
 # fast build rule for target.
 SG90/fast:
-	$(MAKE) -f libs/SG90/CMakeFiles/SG90.dir/build.make libs/SG90/CMakeFiles/SG90.dir/build
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f libs/SG90/CMakeFiles/SG90.dir/build.make libs/SG90/CMakeFiles/SG90.dir/build
 .PHONY : SG90/fast
 
-src/core/RaspiRemoteCam.o: src/core/RaspiRemoteCam.cpp.o
+src/SG90.o: src/SG90.cpp.o
 
-.PHONY : src/core/RaspiRemoteCam.o
+.PHONY : src/SG90.o
 
 # target to build an object file
-src/core/RaspiRemoteCam.cpp.o:
-	$(MAKE) -f CMakeFiles/TheProgram.dir/build.make CMakeFiles/TheProgram.dir/src/core/RaspiRemoteCam.cpp.o
-.PHONY : src/core/RaspiRemoteCam.cpp.o
+src/SG90.cpp.o:
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f libs/SG90/CMakeFiles/SG90.dir/build.make libs/SG90/CMakeFiles/SG90.dir/src/SG90.cpp.o
+.PHONY : src/SG90.cpp.o
 
-src/core/RaspiRemoteCam.i: src/core/RaspiRemoteCam.cpp.i
+src/SG90.i: src/SG90.cpp.i
 
-.PHONY : src/core/RaspiRemoteCam.i
+.PHONY : src/SG90.i
 
 # target to preprocess a source file
-src/core/RaspiRemoteCam.cpp.i:
-	$(MAKE) -f CMakeFiles/TheProgram.dir/build.make CMakeFiles/TheProgram.dir/src/core/RaspiRemoteCam.cpp.i
-.PHONY : src/core/RaspiRemoteCam.cpp.i
+src/SG90.cpp.i:
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f libs/SG90/CMakeFiles/SG90.dir/build.make libs/SG90/CMakeFiles/SG90.dir/src/SG90.cpp.i
+.PHONY : src/SG90.cpp.i
 
-src/core/RaspiRemoteCam.s: src/core/RaspiRemoteCam.cpp.s
+src/SG90.s: src/SG90.cpp.s
 
-.PHONY : src/core/RaspiRemoteCam.s
+.PHONY : src/SG90.s
 
 # target to generate assembly for a file
-src/core/RaspiRemoteCam.cpp.s:
-	$(MAKE) -f CMakeFiles/TheProgram.dir/build.make CMakeFiles/TheProgram.dir/src/core/RaspiRemoteCam.cpp.s
-.PHONY : src/core/RaspiRemoteCam.cpp.s
+src/SG90.cpp.s:
+	cd /home/pi/devel/RaspiRemoteCam/build && $(MAKE) -f libs/SG90/CMakeFiles/SG90.dir/build.make libs/SG90/CMakeFiles/SG90.dir/src/SG90.cpp.s
+.PHONY : src/SG90.cpp.s
 
 # Help Target
 help:
@@ -170,12 +159,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... TheProgram"
-	@echo "... edit_cache"
 	@echo "... SG90"
-	@echo "... src/core/RaspiRemoteCam.o"
-	@echo "... src/core/RaspiRemoteCam.i"
-	@echo "... src/core/RaspiRemoteCam.s"
+	@echo "... edit_cache"
+	@echo "... src/SG90.o"
+	@echo "... src/SG90.i"
+	@echo "... src/SG90.s"
 .PHONY : help
 
 
@@ -187,6 +175,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/pi/devel/RaspiRemoteCam/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

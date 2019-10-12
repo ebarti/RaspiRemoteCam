@@ -36,11 +36,9 @@ stdio.h
 pigpio.h
 -
 
-/home/pi/devel/RaspiRemoteCam/src/core/RaspiRemoteCam.cpp
-stdio.h
--
-pigpio.h
--
+/home/pi/devel/RaspiRemoteCam/libs/SG90/src/SG90.cpp
 SG90.h
+/home/pi/devel/RaspiRemoteCam/libs/SG90/src/SG90.h
+pigpio.h
 -
 

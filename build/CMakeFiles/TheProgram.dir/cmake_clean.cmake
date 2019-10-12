@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/TheProgram.dir/src/core/RaspiRemoteCam.cpp.o"
-  "CMakeFiles/TheProgram.dir/src/servoctl/SG90.cpp.o"
   "TheProgram.pdb"
   "TheProgram"
 )

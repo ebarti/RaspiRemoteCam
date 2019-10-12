@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/pi/devel/RaspiRemoteCam/./include -I/home/pi/devel/RaspiRemoteCam/./src/servoctl/LocalInterfaces -I/home/pi/devel/RaspiRemoteCam/./libs/pigpio/include 
+CXX_INCLUDES = -I/home/pi/devel/RaspiRemoteCam/./include -I/home/pi/devel/RaspiRemoteCam/./src -I/home/pi/devel/RaspiRemoteCam/./libs/pigpio/include -I/home/pi/devel/RaspiRemoteCam/./libs/SG90/include 
 

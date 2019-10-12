@@ -5,16 +5,16 @@ project( RaspiRemoteCam )
 # flags
 
 # include files
-include_directories( ./include ./src/servoctl/LocalInterfaces ./libs/pigpio/include )
+include_directories( ./include ./src ./libs/pigpio/include ./libs/SG90/include  )
+add_subdirectory( ./libs/SG90 )
 
 # target
-add_executable( TheProgram ./src/core/RaspiRemoteCam.cpp ./src/servoctl/SG90.cpp)
+add_executable( TheProgram ./src/core/RaspiRemoteCam.cpp )
 
 
 #libs
 
-# add_subdirectory( ./libs/pigpio )
-# target_link_libraries( TheProgram pigpio )
+target_link_libraries( TheProgram SG90 )
 
 add_library(pigpio SHARED IMPORTED)
 set_property(TARGET pigpio PROPERTY IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/libs/pigpio/libpigpio.so)

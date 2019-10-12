@@ -1,3 +1,6 @@
 /home/pi/devel/RaspiRemoteCam/build/CMakeFiles/rebuild_cache.dir
 /home/pi/devel/RaspiRemoteCam/build/CMakeFiles/TheProgram.dir
 /home/pi/devel/RaspiRemoteCam/build/CMakeFiles/edit_cache.dir
+/home/pi/devel/RaspiRemoteCam/build/libs/SG90/CMakeFiles/rebuild_cache.dir
+/home/pi/devel/RaspiRemoteCam/build/libs/SG90/CMakeFiles/SG90.dir
+/home/pi/devel/RaspiRemoteCam/build/libs/SG90/CMakeFiles/edit_cache.dir
