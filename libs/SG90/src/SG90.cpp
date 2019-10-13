@@ -1,28 +1,18 @@
 #include "SG90.h"
 #include <pigpio.h>
 #ifndef __cplusplus
-extern "C" {
+extern "C++" {
 #endif //#ifdef __cplusplus
 
 // Constructor
-sg90ctl::sg90ctl(int iGPIOidx, int ifrequency, int iminAnglePulseWidth, int imaxAnglePulseWidth)
+sg90ctl::sg90ctl(int iGPIOidx)
 {
-    _GPIOidx = iGPIOidx;
-    _freq = ifrequency;
-    _minW = iminAnglePulseWidth;
-    _maxW = imaxAnglePulseWidth;
+	_GPIOidx = iGPIOidx;
 }
-
 // Destructor
 sg90ctl::~sg90ctl()
 {
     //Nothing to do for now
-}
-
-int sg90ctl::updateSettings(int ifrequency, int iminAnglePulseWidth, int imaxAnglePulseWidth)
-{
-    if (gpioSetPWMfrequency(13,13)>0) return 0;
-    return 1;
 }
 
 int sg90ctl::getGPIOIdx()
@@ -32,16 +22,13 @@ int sg90ctl::getGPIOIdx()
 
 int sg90ctl::setTargetLocation(double iAngle)
 {
-    if((iAngle < 0.0) || (iAngle > 270.0)) return 0;
+    if((iAngle < minAngle) || (iAngle > maxAngle)) return 0;
+	return gpioServo(_GPIOidx, toPWM(iAngle));
 }
 
 int sg90ctl::getCurrentLocation()
 {
-    return 0;
-}
-
-int sg90ctl::moveTo(bool direction /* Zero = Left, One = Right */)
-{
+	if (_GPIOidx) return toAngle(gpioGetServoPulsewidth(_GPIOidx));
     return 0;
 }
 
