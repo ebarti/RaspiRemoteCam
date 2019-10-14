@@ -1,7 +1,7 @@
 ﻿{
   "configurations": [
     {
-      "name": "Linux-Debug",
+      "name": "Linux-ARM-Debug",
       "generator": "Unix Makefiles",
       "remoteMachineName": "${defaultRemoteMachineName}",
       "configurationType": "Debug",

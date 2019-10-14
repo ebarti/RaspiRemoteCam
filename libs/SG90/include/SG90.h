@@ -16,6 +16,7 @@ extern "C++" {
 #define minPulse 1000.0
 #define maxPulse 2000.0
 #define pulseRange (maxPulse-minPulse)
+#define PWMtolerance 1*(pulseRange/angleRange)/ // one degree tolerance
 
 #define toAngle(pwm) ((pwm-minPulse)*angleRange/pulseRange + minAngle)
 #define toPWM(iAngle) (minPulse + (iAngle - minAngle)*pulseRange/angleRange)
@@ -30,18 +31,18 @@ public:
     sg90ctl(int iGPIOidx);
     ~sg90ctl();
 
-    // All return codes are = 1 if succeeded
+    // All return codes are = 0 if succeeded
     int getGPIOIdx();
     int setTargetLocation(double iAngle);
+	int moveToLocation(double iAngle);
     int getCurrentLocation();
- 
-    // Data members
+	int initialise();
+    
 private:
+	
+	// Data members
 	int _GPIOidx;
 	double _targetAngle;
-
-    sg90ctlCB_t theCallback;
-
 
 };
 
