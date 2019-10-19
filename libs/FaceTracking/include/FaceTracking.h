@@ -11,12 +11,28 @@ extern "C++" {
 #include "opencv2/objdetect.hpp"
 #include "opencv2/imgproc.hpp"
 
+typedef struct
+{
+	int xDim;
+	int yDim;
+	int imFormat;
+	int brightness;
+	int contrast;
+	int saturation;
+	int gain;
+	int exposure; //-1 = auto
+	int whiteBalanceRed; //-1 = auto
+	int whiteBalanceBlue; //-1 = auto
+	int mode; //0 = auto
+} cameraProps;
+
+
 class FaceTrackingCamera
 {
 	//Public methods
 public:
 	//Constructor
-	FaceTrackingCamera(string iCascadePath, string iNestedCascadePath);
+	FaceTrackingCamera(string iCascadePath, string iNestedCascadePath, double iScale = 1.0);
 	~FaceTrackingCamera();
 
 	/* Summary of Return Codes
@@ -32,25 +48,23 @@ public:
 	0 = Succeeded
 	1 = Not initialized
 	*/
-	int GetTargetOffset(Point2d & oTargetOffset);
+	int GetCameraCenter(int & oX, int& oY);
 
 	/* Summary of Return Codes
 	0 = Succeeded
 	1 = Not initialized
 	*/
-	int IsFaceAvailable(bool & oFaceAvailable);
+	int GetCameraProperties(cameraProps& oProps);
 
 	/* Summary of Return Codes
 	0 = Succeeded
-	1 = Camera opened before init
-	2 = No valid Path for Cascade Classifier
-	3 = No valid path for Nested Cascade Classifier
-	4 = Cannot open raspberry Cam
+	1 = Not initialized
 	*/
-	int GetFeatureCenter(Mat& iImg, Point2d & oPoint, double iScale = 1);
-
+	int GetTargetOffset(Point2d & oTargetOffset);
 
 private:
+	Point2d GetFeatureCenter(Mat& iImg, Point2d & oPoint, double iScale);
+	bool IsFaceAvailable();
 
 	//Data members
 	bool _isInitialized;
