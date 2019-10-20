@@ -1,6 +1,6 @@
 // Public interface for my custom faceTracking class
-#ifndef FaceTracking_H
-#define FaceTracking_H
+#ifndef FaceTrackingCamera_H
+#define FaceTrackingCamera_H
 #include <stdint.h>
 #ifndef __cplusplus // C++ compatibility
 extern "C++" {
@@ -32,7 +32,7 @@ class FaceTrackingCamera
 	//Public methods
 public:
 	//Constructor
-	FaceTrackingCamera(string iCascadePath, string iNestedCascadePath, double iScale = 1.0);
+	FaceTrackingCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale = 1.0);
 	~FaceTrackingCamera();
 
 	/* Summary of Return Codes
@@ -48,33 +48,38 @@ public:
 	0 = Succeeded
 	1 = Not initialized
 	*/
-	int GetCameraCenter(int & oX, int& oY);
-
-	/* Summary of Return Codes
-	0 = Succeeded
-	1 = Not initialized
-	*/
 	int GetCameraProperties(cameraProps& oProps);
 
 	/* Summary of Return Codes
 	0 = Succeeded
 	1 = Not initialized
+	2 = No frame detected, acquisition error
+	3 = No faces detected
 	*/
-	int GetTargetOffset(Point2d & oTargetOffset);
+	int GetImageAndTarget(cv::Mat& oImg, cv::Point & oTargetOffset);
 
 private:
-	Point2d GetFeatureCenter(Mat& iImg, Point2d & oPoint, double iScale);
-	bool IsFaceAvailable();
+	/* Summary of Return Codes
+	0 = Succeeded
+	1 = No faces detected
+	*/
+	int GetFeatureCenter(cv::Mat& iImg, cv::Point & oPoint, double iScale);
+
+	bool IsSameFace(cv::Point iP1, cv::Point iP2);
+
+	bool IsWithinTolerance(cv::Point iP1, cv::Point iP2);
 
 	//Data members
 	bool _isInitialized;
+	bool _noPrevFaceFound;
 	double _Scale;
-	string _CascadePath;
-	string _NestedCascadePath;
-	CascadeClassifier _CascadeClassifier;
-	CascadeClassifier _NestedCascadeClassifier;
+	std::string _CascadePath;
+	std::string _NestedCascadePath;
+	cv::CascadeClassifier _CascadeClassifier;
+	cv::CascadeClassifier _NestedCascadeClassifier;
+	cv::Point _TrackedFaceLocation;
 	raspicam::RaspiCam_Cv _Camera;
-
+	double _tol = 0.05;
 };
 
 
