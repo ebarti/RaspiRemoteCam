@@ -9,14 +9,14 @@
 extern "C++" {
 #endif //#ifndef __cplusplus
 
-#define minAngle -90.0
-#define maxAngle 90.0
-#define angleRange (maxAngle - minAngle) // Degrees the servo is able to move
-#define operatingFreq 50.0
-#define minPulse 1000.0
-#define maxPulse 2000.0
-#define pulseRange (maxPulse-minPulse)
-#define PWMtolerance 1*(pulseRange/angleRange)/ // one degree tolerance
+const double minAngle = -90.0;
+const double maxAngle = 90.0;
+const double angleRange = (maxAngle - minAngle); // Degrees the servo is able to move
+const double operatingFreq = 50.0;
+const double minPulse = 1000.0;
+const double maxPulse = 2000.0;
+const double pulseRange = (maxPulse - minPulse);
+const double PWMtolerance = 1 * (pulseRange / angleRange); // one degree tolerance
 
 #define toAngle(pwm) ((pwm-minPulse)*angleRange/pulseRange + minAngle)
 #define toPWM(iAngle) (minPulse + (iAngle - minAngle)*pulseRange/angleRange)

@@ -2,19 +2,18 @@ cmake_minimum_required( VERSION 3.0 )
 
 project( lib_SG90 )
 
-# flags
+add_library(lib_SG90 SHARED src/SG90.cpp)
 
-# include files
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include ./src ${CMAKE_CURRENT_SOURCE_DIR}/libs/pigpio/include )
+add_library(SG90::library ALIAS lib_SG90)
+
+target_include_directories(lib_SG90 #include <SG90.h>
+	PUBLIC 
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+		${CMAKE_CURRENT_SOURCE_DIR}/src
+		${CMAKE_CURRENT_SOURCE_DIR}/libs/pigpio/include 
+)
 
 add_library(pigpio SHARED IMPORTED)
 set_property(TARGET pigpio PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/libs/pigpio/libpigpio.so)
 
-
-# target
-
-add_library(SG90 SHARED ./src/SG90.cpp)
-
-target_link_libraries( SG90 pigpio )
-# install(TARGETS SG90 DESTINATION ${CMAKE_SOURCE_DIR})
-# install(TARGETS SG90.h DESTINATION lib)
+target_link_libraries( lib_SG90 pigpio )
