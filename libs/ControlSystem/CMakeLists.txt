@@ -8,10 +8,10 @@ add_library (ControlSystem::library ALIAS lib_ControlSystem)
 
 target_include_directories(lib_ControlSystem
 	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/include/ 
-		${CMAKE_CURRENT_SOURCE_DIR}/src/ 
-		${CMAKE_CURRENT_SOURCE_DIR}/libs/SG90/include/ 
-		${CMAKE_CURRENT_SOURCE_DIR}/libs/FaceTrackingCamera/include/ )
+		${CMAKE_CURRENT_SOURCE_DIR}/include 
+		${CMAKE_CURRENT_SOURCE_DIR}/src 
+		${CMAKE_CURRENT_SOURCE_DIR}/libs/SG90/include 
+		${CMAKE_CURRENT_SOURCE_DIR}/libs/FaceTrackingCamera/include )
 
 
 add_subdirectory( ./libs/SG90 )
