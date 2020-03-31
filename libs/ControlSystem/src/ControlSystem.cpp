@@ -25,30 +25,51 @@ ControlSystem::~ControlSystem()
 
 int ControlSystem::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
 {
+	int retSts = 1;
 	if (iTiltGPIOidx && iPanGPIOidx)
 	{
 		tiltCtl = new sg90ctl(iTiltGPIOidx);
 		panCtl = new sg90ctl(iPanGPIOidx);
 		if (tiltCtl && panCtl)
 		{
-			int initSts = tiltCtl->initialise();
-			if (initSts) return initSts;
-			initSts = panCtl->initialise();
-			return (-1 * initSts); // invert the number to signal it is an error with Pan servo
+			retSts = tiltCtl->initialise();
+			if (retSts) return retSts;
+			retSts = panCtl->initialise();
+			retSts = -1 * retSts; // invert the number to signal it is an error with Pan servo
 		}
 	}
-	return 1;
+	if (!retSts) _servosInitOK = true;
+	return retSts;
 }
 
-int ControlSystem::InitializeCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale = 1.0)
+int ControlSystem::InitializeCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale)
 {
+	int retSts = 1;
 	if (iCascadePath.length() > 0)
 	{
 		rpiCam = new FaceTrackingCamera(iCascadePath, iNestedCascadePath, iScale);
+		
 		if (rpiCam)
-			return rpiCam->Initialize();
+			retSts = rpiCam->Initialize();
 	}
-	return 1;
+	if (!retSts) _camInitOK = true;
+	return retSts;
+}
+
+int ControlSystem::ActivateTrackingMode()
+{
+	if (_camInitOK && _servosInitOK)
+	{
+	}
+	return 0;
+}
+
+int ControlSystem::ActivateUIMode()
+{
+	if (_camInitOK)
+	{
+	}
+	return 0;
 }
 
 #ifndef __cplusplus

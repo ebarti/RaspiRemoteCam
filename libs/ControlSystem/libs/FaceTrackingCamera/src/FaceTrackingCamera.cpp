@@ -72,11 +72,11 @@ int FaceTrackingCamera::GetImageAndTarget(cv::Mat& oImg, Point & oTargetOffset)
 int FaceTrackingCamera::GetFeatureCenter(Mat& iImg, Point & oPoint, double iScale)
 {
 	vector<Rect> faces, faces2;
-	Mat gray, smallImg;
-	cvtColor(iImg, gray, COLOR_BGR2GRAY); // Convert to Gray Scale 
+	Mat grayImg, smallImg;
+	cvtColor(iImg, grayImg, COLOR_BGR2GRAY); // Convert to Gray Scale 
 	double fx = 1 / _Scale;
 	// Resize the Grayscale Image  
-	resize(gray, smallImg, Size(), fx, fx, INTER_LINEAR);
+	resize(grayImg, smallImg, Size(), fx, fx, INTER_LINEAR);
 	equalizeHist(smallImg, smallImg);
 	// Detect faces of different sizes using cascade classifier  
 	_CascadeClassifier.detectMultiScale(smallImg, faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(30, 30));
@@ -105,7 +105,7 @@ int FaceTrackingCamera::GetFeatureCenter(Mat& iImg, Point & oPoint, double iScal
 			break;
 		}	
 	}
-	return ((faceFound) ? 0 : 1);
+	return (faceFound) ? 0 : 1;
 }
 
 bool FaceTrackingCamera::IsWithinTolerance(cv::Point iP1, cv::Point iP2)

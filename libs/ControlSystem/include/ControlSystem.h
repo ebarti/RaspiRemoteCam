@@ -37,13 +37,13 @@ public:
 	*/
 	int InitializeCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale = 1.0);
 
-
 	int ActivateTrackingMode();
 
 	int ActivateUIMode();
 
 private:
 	
+	bool _camInitOK, _servosInitOK;
 	FaceTrackingCamera* rpiCam;
 	sg90ctl* tiltCtl;
 	sg90ctl* panCtl;
