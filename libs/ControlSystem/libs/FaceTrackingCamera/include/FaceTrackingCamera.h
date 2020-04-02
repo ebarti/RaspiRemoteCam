@@ -7,25 +7,10 @@ extern "C++" {
 #endif //#ifndef __cplusplus
 
 #include "opencv2/opencv.hpp"
-#include "raspicam/raspicam_cv.h"
+#include <raspicam/raspicam_cv.h>
 #include "opencv2/objdetect.hpp"
 #include "opencv2/imgproc.hpp"
-
-typedef struct
-{
-	int xDim;
-	int yDim;
-	int imFormat;
-	int brightness;
-	int contrast;
-	int saturation;
-	int gain;
-	int exposure; //-1 = auto
-	int whiteBalanceRed; //-1 = auto
-	int whiteBalanceBlue; //-1 = auto
-	int mode; //0 = auto
-} cameraProps;
-
+#include <string>
 
 class FaceTrackingCamera
 {
@@ -48,7 +33,7 @@ public:
 	0 = Succeeded
 	1 = Not initialized
 	*/
-	int GetCameraProperties(cameraProps& oProps);
+	int GetCameraProperties(cv::VideoCaptureProperties iPropName, double & oPropValue);
 
 	/* Summary of Return Codes
 	0 = Succeeded
@@ -58,6 +43,7 @@ public:
 	*/
 	int GetImageAndTarget(cv::Mat& oImg, cv::Point & oTargetOffset);
 
+	
 private:
 	/* Summary of Return Codes
 	0 = Succeeded

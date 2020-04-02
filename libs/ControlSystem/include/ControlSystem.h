@@ -44,9 +44,9 @@ public:
 private:
 	
 	bool _camInitOK, _servosInitOK;
-	FaceTrackingCamera* rpiCam;
-	sg90ctl* tiltCtl;
-	sg90ctl* panCtl;
+	FaceTrackingCamera* _rpiCam;
+	sg90ctl* _tiltCtl;
+	sg90ctl* _panCtl;
 };
 
 

@@ -6,21 +6,21 @@ extern "C++" {
 
 ControlSystem::ControlSystem()
 {
-	rpiCam = NULL;
-	tiltCtl = NULL;
-	panCtl = NULL;
+	_rpiCam = NULL;
+	_tiltCtl = NULL;
+	_panCtl = NULL;
 }
 ControlSystem::~ControlSystem()
 {
-	if(rpiCam)
-		delete rpiCam;
-	rpiCam = NULL;
-	if (tiltCtl)
-		delete tiltCtl;
-	tiltCtl = NULL;
-	if (panCtl)
-		delete panCtl;
-	panCtl = NULL;
+	if(_rpiCam)
+		delete _rpiCam;
+	_rpiCam = NULL;
+	if (_tiltCtl)
+		delete _tiltCtl;
+	_tiltCtl = NULL;
+	if (_panCtl)
+		delete _panCtl;
+	_panCtl = NULL;
 }
 
 int ControlSystem::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
@@ -28,13 +28,13 @@ int ControlSystem::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
 	int retSts = 1;
 	if (iTiltGPIOidx && iPanGPIOidx)
 	{
-		tiltCtl = new sg90ctl(iTiltGPIOidx);
-		panCtl = new sg90ctl(iPanGPIOidx);
-		if (tiltCtl && panCtl)
+		_tiltCtl = new sg90ctl(iTiltGPIOidx);
+		_panCtl = new sg90ctl(iPanGPIOidx);
+		if (_tiltCtl && _panCtl)
 		{
-			retSts = tiltCtl->initialise();
+			retSts = _tiltCtl->initialise();
 			if (retSts) return retSts;
-			retSts = panCtl->initialise();
+			retSts = _panCtl->initialise();
 			retSts = -1 * retSts; // invert the number to signal it is an error with Pan servo
 		}
 	}
@@ -47,10 +47,10 @@ int ControlSystem::InitializeCamera(std::string iCascadePath, std::string iNeste
 	int retSts = 1;
 	if (iCascadePath.length() > 0)
 	{
-		rpiCam = new FaceTrackingCamera(iCascadePath, iNestedCascadePath, iScale);
+		_rpiCam = new FaceTrackingCamera(iCascadePath, iNestedCascadePath, iScale);
 		
-		if (rpiCam)
-			retSts = rpiCam->Initialize();
+		if (_rpiCam)
+			retSts = _rpiCam->Initialize();
 	}
 	if (!retSts) _camInitOK = true;
 	return retSts;

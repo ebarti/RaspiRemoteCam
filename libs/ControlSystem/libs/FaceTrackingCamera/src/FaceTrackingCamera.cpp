@@ -33,20 +33,12 @@ int FaceTrackingCamera::Initialize()
 	return 0;
 }
 
-int FaceTrackingCamera::GetCameraProperties(cameraProps& oProps)
+int FaceTrackingCamera::GetCameraProperties(cv::VideoCaptureProperties iPropName, double & oPropValue)
 {
 	if (!_isInitialized) return 1;
-	oProps.brightness = static_cast<int>(_Camera.get(CAP_PROP_BRIGHTNESS));
-	oProps.contrast = static_cast<int>(_Camera.get(CAP_PROP_CONTRAST));
-	oProps.exposure = static_cast<int>(_Camera.get(CAP_PROP_EXPOSURE));
-	oProps.gain = static_cast<int>(_Camera.get(CAP_PROP_GAIN));
-	oProps.imFormat = static_cast<int>(_Camera.get(CAP_PROP_FORMAT));
-	oProps.mode = static_cast<int>(_Camera.get(CAP_PROP_MODE));
-	oProps.saturation = static_cast<int>(_Camera.get(CAP_PROP_SATURATION));
-	oProps.whiteBalanceBlue = static_cast<int>(_Camera.get(CAP_PROP_WHITE_BALANCE_BLUE_U));
-	oProps.whiteBalanceRed = static_cast<int>(_Camera.get(CAP_PROP_WHITE_BALANCE_RED_V));
-	oProps.xDim = static_cast<int>(_Camera.get(CAP_PROP_FRAME_HEIGHT));
-	oProps.yDim = static_cast<int>(_Camera.get(CAP_PROP_FRAME_WIDTH));
+	
+	oPropValue = _Camera.get(iPropName);
+
 	return 0;
 }
 
