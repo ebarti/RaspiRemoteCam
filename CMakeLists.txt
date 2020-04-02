@@ -2,6 +2,8 @@ cmake_minimum_required( VERSION 3.0 )
 
 project( RaspiRemoteCam )
 
+include_directories(src)
+
 add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/libs/ControlSystem )
 
 add_executable( Exec_RaspiRemoteCam ${CMAKE_CURRENT_SOURCE_DIR}/src/core/RaspiRemoteCam.cpp )
