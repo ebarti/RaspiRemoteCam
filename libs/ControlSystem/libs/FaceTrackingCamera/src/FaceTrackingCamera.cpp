@@ -3,65 +3,92 @@ extern "C++" {
 #endif //#ifndef __cplusplus
 #include "FaceTrackingCamera.h"
 
-//using namespace cv;
 using namespace std;
 using namespace cv;
+
+
 // Constructor
-FaceTrackingCamera::FaceTrackingCamera(string iCascadePath, string iNestedCascadePath, double iScale)
+FaceTrackingCamera::FaceTrackingCamera(string iCascadePath, string iNestedCascadePath, double iScale, bool tstMode)
 {
 	_Scale = iScale;
 	_CascadePath = iCascadePath;
 	_NestedCascadePath = iNestedCascadePath;
-}
-FaceTrackingCamera::~FaceTrackingCamera()
-{
-	if (_Camera.isOpened()) _Camera.release();
+	_tstMode = tstMode;
 }
 
+// Destructor
+FaceTrackingCamera::~FaceTrackingCamera()
+{
+	if (IsCameraOpen()) _Camera.release();
+}
+
+///////////////////////////////////
+// Implements Initialize()
+///////////////////////////////////
 int FaceTrackingCamera::Initialize()
 {
 	//Check if camera is already opened and error out if so
-	if (_Camera.isOpened()) return 1;
+	if (IsCameraOpen()) return 1;
 
 	//Load the classifiers
 	if (!_CascadeClassifier.load(_CascadePath)) return 2;
 	if (!_NestedCascadeClassifier.load(_NestedCascadePath)) return 3;
 
 	//Open camera
-	if (!_Camera.open()) return 4;
+	if (OpenCamera()) return 4;
 	_isInitialized = true;
 	return 0;
 }
 
+///////////////////////////////////
+// Implements GetCameraProperties
+///////////////////////////////////
 int FaceTrackingCamera::GetCameraProperties(cv::VideoCaptureProperties iPropName, double & oPropValue)
 {
-	if (!_isInitialized) return 1;
+	if (!IsCameraOpen()) return 1;
 	
 	oPropValue = _Camera.get(iPropName);
 
 	return 0;
 }
 
-
+///////////////////////////////////
+// Implements GetImageAndTarget
+///////////////////////////////////
 int FaceTrackingCamera::GetImageAndTarget(cv::Mat& oImg, Point & oTargetOffset)
 {
-	if (!_isInitialized) return 1;
-	if (_Camera.isOpened())
-	{
-		Mat frame, image;
-		if (_Camera.grab())
-		{
-			_Camera.retrieve(frame);
-			if (frame.empty()) return 2;
-			oImg = frame.clone();
-			if (GetFeatureCenter(oImg, oTargetOffset, _Scale)) return 3;
-		}
-	}
+	if (GetImage(oImg)) return 1;
+	if (GetFeatureCenter(oImg, oTargetOffset, _Scale)) return 2;
 	return 0;
 }
 
+///////////////////////////////////
+// Implements GetImage
+///////////////////////////////////
+int FaceTrackingCamera::GetImage(cv::Mat& oImg)
+{
+	if (!_isInitialized) return 1;
+	if (_tstMode)
+	{
+		oImg = imread("/home/pi/Desktop/image2.jpg");
+	}
+	else
+	{
+		if (IsCameraOpen())
+		{
+			if (_Camera.grab())
+			{
+				_Camera.retrieve(oImg);
+			}
+		}
+	}
+	return (!oImg.data) ? 1 : 0;
+}
 
-int FaceTrackingCamera::GetFeatureCenter(Mat& iImg, Point & oPoint, double iScale)
+///////////////////////////////////
+// Implements GetFeatureCenter
+///////////////////////////////////
+int FaceTrackingCamera::GetFeatureCenter(const Mat& iImg, Point & oPoint, double iScale)
 {
 	vector<Rect> faces, faces2;
 	Mat grayImg, smallImg;
@@ -100,6 +127,18 @@ int FaceTrackingCamera::GetFeatureCenter(Mat& iImg, Point & oPoint, double iScal
 	return (faceFound) ? 0 : 1;
 }
 
+///////////////////////////////////
+// Implements IsSameFace
+///////////////////////////////////
+bool FaceTrackingCamera::IsSameFace(cv::Point iP1, cv::Point iP2)
+{
+	// TODO: complete implementation
+	return false;
+}
+
+///////////////////////////////////
+// Implements IsWithinTolerance
+///////////////////////////////////
 bool FaceTrackingCamera::IsWithinTolerance(cv::Point iP1, cv::Point iP2)
 {
 	if (_noPrevFaceFound)
@@ -115,6 +154,21 @@ bool FaceTrackingCamera::IsWithinTolerance(cv::Point iP1, cv::Point iP2)
 	return true;
 }
 
+///////////////////////////////////
+// Implements OpenCamera
+///////////////////////////////////
+bool FaceTrackingCamera::OpenCamera()
+{
+	if (_tstMode) return true;
+	return _Camera.open();
+}
+
+
+bool FaceTrackingCamera::IsCameraOpen()
+{
+	if (_tstMode) return false;
+	return _Camera.isOpened();
+}
 
 #ifndef __cplusplus
 }
