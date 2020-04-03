@@ -19,7 +19,7 @@
         ".vs",
         ".git"
       ],
-      "rsyncCommandArgs": "-t --delete --delete-excluded",
+      "rsyncCommandArgs": "-t --delete --delete-before",
       "remoteCopyBuildOutput": false,
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",

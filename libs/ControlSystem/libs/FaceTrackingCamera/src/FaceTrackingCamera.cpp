@@ -35,7 +35,7 @@ int FaceTrackingCamera::Initialize()
 	if (!_NestedCascadeClassifier.load(_NestedCascadePath)) return 3;
 
 	//Open camera
-	if (OpenCamera()) return 4;
+	if (!OpenCamera()) return 4;
 	_isInitialized = true;
 	return 0;
 }
@@ -69,19 +69,9 @@ int FaceTrackingCamera::GetImage(cv::Mat& oImg)
 {
 	if (!_isInitialized) return 1;
 	if (_tstMode)
-	{
 		oImg = imread("/home/pi/Desktop/image2.jpg");
-	}
-	else
-	{
-		if (IsCameraOpen())
-		{
-			if (_Camera.grab())
-			{
-				_Camera.retrieve(oImg);
-			}
-		}
-	}
+	else if(IsCameraOpen() && _Camera.grab())
+		_Camera.retrieve(oImg);
 	return (!oImg.data) ? 1 : 0;
 }
 
