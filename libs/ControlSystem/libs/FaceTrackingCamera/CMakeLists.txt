@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.15 )
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project ( lib_FaceTrackingCamera )
 
@@ -13,8 +13,8 @@ find_package(raspicam REQUIRED)
 
 
 
-include_directories(${OpenCV_INCLUDE_DIRS})
-add_library (lib_FaceTrackingCamera SHARED ${CMAKE_CURRENT_SOURCE_DIR}/include/FaceTrackingCamera.h ${CMAKE_CURRENT_SOURCE_DIR}/src/FaceTrackingCamera.cpp )
+#include_directories(${OpenCV_INCLUDE_DIRS})
+add_library (lib_FaceTrackingCamera SHARED ${CMAKE_CURRENT_SOURCE_DIR}/include/FaceTracker.h ${CMAKE_CURRENT_SOURCE_DIR}/include/FaceTrackingCamera.h ${CMAKE_CURRENT_SOURCE_DIR}/src/FaceTrackingCamera.cpp )
 
 add_library (FaceTrackingCamera::library ALIAS lib_FaceTrackingCamera)
 
@@ -22,6 +22,7 @@ add_library (FaceTrackingCamera::library ALIAS lib_FaceTrackingCamera)
 
 target_include_directories( lib_FaceTrackingCamera
 	PUBLIC
+		${OpenCV_INCLUDE_DIRS}
 		${CMAKE_CURRENT_SOURCE_DIR}/include 
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 )

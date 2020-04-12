@@ -1,53 +1,53 @@
 #include <FaceTrackingCamera.h>
 #include <gtest/gtest.h>
-#include <string>
-#include "opencv2/opencv.hpp"
+#include <stdlib.h>
+#include <opencv2/core/utils/logger.hpp>
 using namespace cv;
 
 class CameraTest : public ::testing::Test
 {
 protected:
-	void SetUp() override
+	static void SetUpTestSuite()
 	{
-		std::unique_ptr<FaceTrackingCamera> newCamera(new FaceTrackingCamera(CascadePath, NestedCascadePath, 1.0, true));
-		spCamera = std::move(newCamera);
-		ASSERT_EQ(nullptr != spCamera, true) << "CRITICAL ERROR: Ran out of available memory" << std::endl;
+		cv::utils::logging::setLogLevel(utils::logging::LOG_LEVEL_VERBOSE);
+		setenv("OPENCV_SAMPLES_DATA_PATH", "/home/pi/opencv", 1);
+		std::string cascadeFrontalfilename = samples::findFile("data/lbpcascades/lbpcascade_frontalface.xml");
+		_tstCamera = new FaceTrackingCamera(cascadeFrontalfilename, cascadeFrontalfilename, true);
+	}
+	
+	static void TearDownTestSuite()
+	{
+		delete _tstCamera;
+		_tstCamera = NULL;
 	}
 
-	const std::string CascadePath = "/usr/local/share/opencv4/haarcascades/haarcascade_frontalcatface.xml";
-	const std::string NestedCascadePath = "/usr/local/share/opencv4/haarcascades/haarcascade_frontalcatface.xml";
-	std::unique_ptr<FaceTrackingCamera> spCamera;
-};
-
-class RealCameraTest : public ::testing::Test
-{
-protected:
-	void SetUp() override
+	virtual void SetUp()
 	{
-		std::unique_ptr<FaceTrackingCamera> newCamera(new FaceTrackingCamera(CascadePath, NestedCascadePath, 1.0));
-		spCamera = std::move(newCamera);
-		ASSERT_EQ(nullptr != spCamera, true) << "CRITICAL ERROR: Ran out of available memory" << std::endl;
+		ASSERT_EQ(NULL != _tstCamera, true);
 	}
-
-	const std::string CascadePath = "/usr/local/share/opencv4/haarcascades/haarcascade_frontalcatface.xml";
-	const std::string NestedCascadePath = "/usr/local/share/opencv4/haarcascades/haarcascade_frontalcatface.xml";
-	std::unique_ptr<FaceTrackingCamera> spCamera;
+	static FaceTrackingCamera * _tstCamera;
 };
 
+FaceTrackingCamera * CameraTest::_tstCamera = NULL;
 
-TEST_F(CameraTest, SimulatedCamera)
+TEST_F(CameraTest, Initialize)
 {
-	EXPECT_EQ(spCamera->Initialize(), 0);
+	EXPECT_EQ(_tstCamera->Initialize(), 0);
+}
+
+
+TEST_F(CameraTest, GetCameraProperty)
+{
+	double dblValue = 0.0;
+	EXPECT_EQ(_tstCamera->GetCameraProperties(cv::VideoCaptureProperties::CAP_PROP_BRIGHTNESS, dblValue), 0);
+	EXPECT_EQ((0.0 != dblValue), true);
+}
+
+TEST_F(CameraTest, GetImageAndTarget)
+{
 	cv::Mat RetrievedImage;
 	cv::Point pointLocation;
-	EXPECT_EQ(spCamera->GetImageAndTarget(RetrievedImage, pointLocation), 0);
+	EXPECT_EQ(_tstCamera->GetImageAndTarget(RetrievedImage, pointLocation), 0);
 	// Test now the output image
 	EXPECT_EQ(!RetrievedImage.data, false);
-
 }
-
-TEST_F(RealCameraTest, RealCamera)
-{
-	EXPECT_EQ(spCamera->Initialize(), 0);
-}
-

@@ -21,7 +21,7 @@
       ],
       "rsyncCommandArgs": "-t --delete --delete-before",
       "remoteCopyBuildOutput": false,
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "-DBUILD_TESTS=ON",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [

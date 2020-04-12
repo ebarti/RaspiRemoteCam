@@ -6,10 +6,9 @@
 extern "C++" {
 #endif //#ifndef __cplusplus
 
-#include "opencv2/opencv.hpp"
 #include <raspicam/raspicam_cv.h>
-#include "opencv2/objdetect.hpp"
-#include "opencv2/imgproc.hpp"
+#include "FaceTracker.h"
+#include <memory>
 #include <string>
 
 
@@ -18,14 +17,14 @@ class FaceTrackingCamera
 	//Public methods
 public:
 	//Constructor
-	FaceTrackingCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale = 1.0, bool tstMode = false);
+	FaceTrackingCamera(std::string iCascadePath, std::string iNestedCascadePath, bool tstMode = false);
 	~FaceTrackingCamera();
 
 	/* Summary of Return Codes
 	0 = Succeeded
 	1 = Camera opened before init
-	2 = No valid Path for Cascade Classifier
-	3 = No valid path for Nested Cascade Classifier
+	2 = No valid Path for Cascade Classifier or Nested Cascade Classifier
+	3 = Could not start tracker
 	4 = Cannot open raspberry Cam
 	*/
 	int Initialize();
@@ -57,45 +56,16 @@ protected:
 	0 = Succeeded
 	1 = No faces detected
 	*/
-	int GetFeatureCenter(const cv::Mat& iImg, cv::Point & oPoint, double iScale);
-
-	/*
-		Checks to see if the points correspond to the same facial 
-		feature after it (might have) moved.
-	*/
-	bool IsSameFace(cv::Point iP1, cv::Point iP2);
-
-	/*
-		Checks the amount a point has moved.
-		Used for determining whether the points correspond to
-		the same feature.
-	*/
-	bool IsWithinTolerance(cv::Point iP1, cv::Point iP2);
-
-	/*
-		Adapted method to avoid code duplication on test mode.
-		Returns true if camera was opened successfully.
-	*/
-	bool OpenCamera();
-
-	/*
-		Adapted method to avoid code duplication on test mode
-		Returns true if camera is currently open
-	*/
-	bool IsCameraOpen();
+	int GetFeatureCenter(const cv::Mat& iImg, cv::Point & oPoint);
 
 	//Data members
 	bool _isInitialized;
-	bool _noPrevFaceFound;
-	double _Scale;
-	std::string _CascadePath;
-	std::string _NestedCascadePath;
-	cv::CascadeClassifier _CascadeClassifier;
-	cv::CascadeClassifier _NestedCascadeClassifier;
-	cv::Point _TrackedFaceLocation;
+	std::string _faceClassifierPath;
+	std::string _nestedClassifier;
 	raspicam::RaspiCam_Cv _Camera;
-	double _tol = 0.05;
 	bool _tstMode;
+	//std::unique_ptr<cv::DetectionBasedTracker> _spTracker;
+	cv::Ptr<cv::DetectionBasedTracker> _spTracker;
 };
 
 
