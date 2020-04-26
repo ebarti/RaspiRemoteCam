@@ -9,17 +9,6 @@
 extern "C++" {
 #endif //#ifndef __cplusplus
 
-const double minAngle = -90.0;
-const double maxAngle = 90.0;
-const double angleRange = (maxAngle - minAngle); // Degrees the servo is able to move
-const double operatingFreq = 50.0;
-const double minPulse = 1000.0;
-const double maxPulse = 2000.0;
-const double pulseRange = (maxPulse - minPulse);
-const double PWMtolerance = 1 * (pulseRange / angleRange); // one degree tolerance
-
-#define toAngle(pwm) ((pwm-minPulse)*angleRange/pulseRange + minAngle)
-#define toPWM(iAngle) (minPulse + (iAngle - minAngle)*pulseRange/angleRange)
 // for future callback implementation
 typedef void (*sg90ctlCB_t)(int);
 
@@ -28,6 +17,7 @@ class sg90ctl
     //Public methods:
 public:
     //Constructor
+    // For a raspberry pi 4, the hardware PWM capable pins are 12, 13, 18, 19
     sg90ctl(int iGPIOidx);
     ~sg90ctl();
 
@@ -40,10 +30,14 @@ public:
     
 private:
 	
+    bool isHardwarePWM() { return  ((12 == _GPIOidx) || (13 == _GPIOidx) || (18 == _GPIOidx) || (19 == _GPIOidx)) ? 1 : 0; };
+    double toAngle(double iValue);
+    double toPWM(double iAngle);
+    double toDutyCycle(double iAngle);
 	// Data members
 	int _GPIOidx;
 	double _targetAngle;
-
+    
 };
 
 #ifndef __cplusplus

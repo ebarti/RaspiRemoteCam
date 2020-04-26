@@ -44,9 +44,9 @@ public:
 private:
 	
 	bool _camInitOK, _servosInitOK;
-	FaceTrackingCamera* _rpiCam;
-	sg90ctl* _tiltCtl;
-	sg90ctl* _panCtl;
+	std::shared_ptr<FaceTrackingCamera> _spCamera;
+	std::unique_ptr<sg90ctl> _spTiltCtrl;
+	std::unique_ptr<sg90ctl> _spPanCtrl;
 };
 
 

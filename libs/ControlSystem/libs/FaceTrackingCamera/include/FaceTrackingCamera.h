@@ -6,11 +6,13 @@
 extern "C++" {
 #endif //#ifndef __cplusplus
 
+
+
+
 #include <raspicam/raspicam_cv.h>
-#include "FaceTracker.h"
 #include <memory>
 #include <string>
-
+#include "FaceDetectorAdapter.h"
 
 class FaceTrackingCamera
 {
@@ -40,8 +42,9 @@ public:
 	1 = Not initialized
 	2 = No frame detected, acquisition error
 	3 = No faces detected
+	4 = Could not compute location of tracked object
 	*/
-	int GetImageAndTarget(cv::Mat& oImg, cv::Point & oTargetOffset);
+	int Process(cv::Mat& oImg, cv::Ptr<cv::Point2f> & oTargetOffset);
 
 protected:
 
@@ -54,9 +57,17 @@ protected:
 
 	/* Summary of Return Codes
 	0 = Succeeded
-	1 = No faces detected
+	3 = No faces detected
+	4 = Could not compute target
 	*/
-	int GetFeatureCenter(const cv::Mat& iImg, cv::Point & oPoint);
+	int ProcessImage(const cv::Mat& iImg, cv::Ptr<cv::Point2f> & oPoint);
+
+	/* Summary of Return Codes
+	0 = Succeeded
+	4 = Could not compute target
+	*/
+	int ComputeLocation(const std::vector<cv::DetectionBasedTracker::ExtObject> & iObjects, cv::Ptr<cv::Point2f> iCenter, cv::Ptr<cv::Point2f>& oPoint);
+		
 
 	//Data members
 	bool _isInitialized;
@@ -64,8 +75,13 @@ protected:
 	std::string _nestedClassifier;
 	raspicam::RaspiCam_Cv _Camera;
 	bool _tstMode;
+	bool _TrackingStarted;
+	int _TrackedObjectId;
 	//std::unique_ptr<cv::DetectionBasedTracker> _spTracker;
 	cv::Ptr<cv::DetectionBasedTracker> _spTracker;
+	//cv::DetectionBasedTracker * _pTracker;
+	cv::Ptr<cv::DetectionBasedTracker::IDetector> _spFaceDetector;
+	cv::Ptr<cv::DetectionBasedTracker::IDetector> _spTrackingDetector;
 };
 
 

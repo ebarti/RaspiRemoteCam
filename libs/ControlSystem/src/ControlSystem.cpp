@@ -3,24 +3,17 @@ extern "C++" {
 #endif //#ifndef __cplusplus
 
 #include "ControlSystem.h"
+#include <pigpio.h>
 
 ControlSystem::ControlSystem()
 {
-	_rpiCam = NULL;
-	_tiltCtl = NULL;
-	_panCtl = NULL;
+	// Init pigpio Library
+	gpioInitialise();
 }
 ControlSystem::~ControlSystem()
 {
-	if(_rpiCam)
-		delete _rpiCam;
-	_rpiCam = NULL;
-	if (_tiltCtl)
-		delete _tiltCtl;
-	_tiltCtl = NULL;
-	if (_panCtl)
-		delete _panCtl;
-	_panCtl = NULL;
+	// Terminate library.
+	gpioTerminate();
 }
 
 int ControlSystem::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
@@ -28,13 +21,13 @@ int ControlSystem::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
 	int retSts = 1;
 	if (iTiltGPIOidx && iPanGPIOidx)
 	{
-		_tiltCtl = new sg90ctl(iTiltGPIOidx);
-		_panCtl = new sg90ctl(iPanGPIOidx);
-		if (_tiltCtl && _panCtl)
+		_spTiltCtrl = std::make_unique<sg90ctl>(iTiltGPIOidx);
+		_spPanCtrl = std::make_unique<sg90ctl>(iPanGPIOidx);
+		if (nullptr != _spTiltCtrl && nullptr != _spPanCtrl)
 		{
-			retSts = _tiltCtl->initialise();
+			retSts = _spTiltCtrl->initialise();
 			if (retSts) return retSts;
-			retSts = _panCtl->initialise();
+			retSts = _spPanCtrl->initialise();
 			retSts = -1 * retSts; // invert the number to signal it is an error with Pan servo
 		}
 	}
@@ -47,10 +40,9 @@ int ControlSystem::InitializeCamera(std::string iCascadePath, std::string iNeste
 	int retSts = 1;
 	if (iCascadePath.length() > 0)
 	{
-		_rpiCam = new FaceTrackingCamera(iCascadePath, iNestedCascadePath, iScale);
-		
-		if (_rpiCam)
-			retSts = _rpiCam->Initialize();
+		_spCamera = std::make_shared<FaceTrackingCamera>(iCascadePath, iNestedCascadePath, iScale);
+		if (_spCamera)
+			retSts = _spCamera->Initialize();
 	}
 	if (!retSts) _camInitOK = true;
 	return retSts;

@@ -1,14 +1,23 @@
+#ifndef FaceDetectorAdapter_H
+#define FaceDetectorAdapter_H
+
 #ifndef __cplusplus // C++ compatibility
 extern "C++" {
 #endif //#ifndef __cplusplus
 
+#ifndef DEBUG
+#define DEBUG
+#endif
+
+#define LOGD(_str, ...) (printf(_str , ## __VA_ARGS__), printf("\n"), fflush(stdout))
 #include <opencv2/imgproc.hpp>  // Gaussian Blur
 #include <opencv2/core.hpp>        // Basic OpenCV structures (cv::Mat, Scalar)
 #include <opencv2/highgui.hpp>  // OpenCV window I/O
 #include <opencv2/features2d.hpp>
 #include <opencv2/objdetect.hpp>
-
+#include <opencv2/objdetect/detection_based_tracker.hpp>
 #include <stdio.h>
+#include <iostream>
 
 class FaceDetectorAdapter : public cv::DetectionBasedTracker::IDetector
 {
@@ -32,3 +41,5 @@ private:
 	FaceDetectorAdapter();
 	cv::Ptr<cv::CascadeClassifier> Detector;
 };
+
+#endif

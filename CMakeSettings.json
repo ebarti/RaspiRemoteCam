@@ -14,19 +14,16 @@
       "remoteCopySources": true,
       "remoteCopySourcesOutputVerbosity": "Normal",
       "remoteCopySourcesConcurrentCopies": "10",
+      "remoteCopyAdditionalIncludeDirectories": [ "/usr/local/include/opencv4", "/home/pi/opencv", "/home/pi/opencv_contrib" ],
       "remoteCopySourcesMethod": "rsync",
-      "remoteCopySourcesExclusionList": [
-        ".vs",
-        ".git"
-      ],
+      "remoteCopySourcesExclusionList": [ ".vs", ".git" ],
       "rsyncCommandArgs": "-t --delete --delete-before",
       "remoteCopyBuildOutput": false,
       "cmakeCommandArgs": "-DBUILD_TESTS=ON",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [
-        "linux_arm"
-      ]
+      "inheritEnvironments": [ "linux_arm" ],
+      "variables": []
     }
   ]
 }
