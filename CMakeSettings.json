@@ -14,7 +14,7 @@
       "remoteCopySources": true,
       "remoteCopySourcesOutputVerbosity": "Normal",
       "remoteCopySourcesConcurrentCopies": "10",
-      "remoteCopyAdditionalIncludeDirectories": [ "/usr/local/include/opencv4", "/home/pi/opencv", "/home/pi/opencv_contrib" ],
+      "remoteCopyAdditionalIncludeDirectories": [ "/usr/local/include/opencv4", "/home/pi/opencv", "/home/pi/opencv_contrib", "/home/pi/pigpio" ],
       "remoteCopySourcesMethod": "rsync",
       "remoteCopySourcesExclusionList": [ ".vs", ".git" ],
       "rsyncCommandArgs": "-t --delete --delete-before",

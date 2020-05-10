@@ -4,7 +4,7 @@ extern "C++" {
 
 #include "ControlSystem.h"
 #include <pigpio.h>
-
+#include <chrono>
 ControlSystem::ControlSystem()
 {
 	// Init pigpio Library
@@ -48,21 +48,45 @@ int ControlSystem::InitializeCamera(std::string iCascadePath, std::string iNeste
 	return retSts;
 }
 
-int ControlSystem::ActivateTrackingMode()
+int ControlSystem::ActivateTrackingMode(std::future<void> exitFutureObj)
 {
-	if (_camInitOK && _servosInitOK)
+	if (!_camInitOK || !_servosInitOK) return 1;
+	while (exitFutureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout)
 	{
+		Track();
 	}
 	return 0;
 }
 
-int ControlSystem::ActivateUIMode()
+int ControlSystem::ActivateUIMode(std::future<void> exitFutureObj)
 {
-	if (_camInitOK)
+	if (!_camInitOK) return 1;
+	while (exitFutureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout)
 	{
+		// NOP
 	}
 	return 0;
 }
+
+void ControlSystem::Track()
+{
+	cv::Ptr<cv::Point2f> targetLocation;
+	cv::Mat image;
+	
+	if (0 == _spCamera->Process(image, targetLocation))
+	{
+		double centerX = image.rows / 2.0;
+		double centerY = image.cols / 2.0;
+		if (targetLocation)
+		{
+			if (targetLocation->x != centerX)
+				_spPanCtrl->move(targetLocation->x > centerX);
+			if (targetLocation->y != centerY)
+				_spTiltCtrl->move(targetLocation->y > centerY);
+		}
+	}
+}
+
 
 #ifndef __cplusplus
 }

@@ -22,22 +22,21 @@ public:
     ~sg90ctl();
 
     // All return codes are = 0 if succeeded
-    int getGPIOIdx();
+    int getGPIOIdx() { return _GPIOidx; };
     int setTargetLocation(double iAngle);
 	int moveToLocation(double iAngle);
-    int getCurrentLocation();
+    double getCurrentLocation();
 	int initialise();
+    int move(bool iMovePlus);
+    void CleanUp();
     
 private:
 	
     bool isHardwarePWM() { return  ((12 == _GPIOidx) || (13 == _GPIOidx) || (18 == _GPIOidx) || (19 == _GPIOidx)) ? 1 : 0; };
-    double toAngle(double iValue);
-    double toPWM(double iAngle);
-    double toDutyCycle(double iAngle);
+    double toAngle(unsigned int iValue);
+    unsigned int toDutyCycle(double iAngle);
 	// Data members
 	int _GPIOidx;
-	double _targetAngle;
-    
 };
 
 #ifndef __cplusplus

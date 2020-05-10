@@ -12,10 +12,6 @@ find_package(OpenCV REQUIRED)
 find_package(raspicam REQUIRED)
 
 
-
-
-#include_directories(${OpenCV_INCLUDE_DIRS})
-
 message(STATUS "OpenCV Include Dirs: " ${OpenCV_INCLUDE_DIRS})
 message(STATUS "OpenCV Libs: " ${OpenCV_LIBS})
 add_library (lib_FaceTrackingCamera SHARED ${CMAKE_CURRENT_SOURCE_DIR}/include/FaceDetectorAdapter.h ${CMAKE_CURRENT_SOURCE_DIR}/include/FaceTrackingCamera.h  ${CMAKE_CURRENT_SOURCE_DIR}/src/FaceTrackingCamera.cpp )

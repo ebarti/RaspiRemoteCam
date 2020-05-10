@@ -2,5 +2,5 @@
 	path = libs/googletest
 	url = https://github.com/google/googletest.git
 [submodule "pigpio"]
-	path = pigpio
+	path = libs/pigpio
 	url = https://github.com/joan2937/pigpio.git

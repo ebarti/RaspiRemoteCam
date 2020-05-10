@@ -7,6 +7,7 @@ extern "C++" {
 
 #include <SG90.h>
 #include <FaceTrackingCamera.h>
+#include <future>
 
 class ControlSystem
 {
@@ -37,11 +38,18 @@ public:
 	*/
 	int InitializeCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale = 1.0);
 
-	int ActivateTrackingMode();
+	/*
+	Summary of return codes:
+	1 = System not initialized
+	2 = Canceled before starting
+	*/
+	int ActivateTrackingMode(std::future<void> exitFutureObj);
 
-	int ActivateUIMode();
+	int ActivateUIMode(std::future<void> exitFutureObj);
 
 private:
+
+	void Track();	
 	
 	bool _camInitOK, _servosInitOK;
 	std::shared_ptr<FaceTrackingCamera> _spCamera;

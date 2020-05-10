@@ -6,14 +6,11 @@ extern "C++" {
 
 const double minAngle = -90.0;
 const double maxAngle = 90.0;
-const double angleRange = (maxAngle - minAngle); // Degrees the servo is able to move
-const double operatingFreq = 50.0;
-const double signalPeriod = 1.0 / operatingFreq;
-const double minPulse = 1000.0;
-const double maxPulse = 2000.0;
-const double pulseRange = (maxPulse - minPulse);
-const double PWMtolerance = 1 * (pulseRange / angleRange); // one degree tolerance
-
+const double angleRange = 180; // Degrees the servo is able to move
+const int operatingFreq = 50;
+const int minDuty = 500000;
+const int maxDuty = 1000000;
+const int dutyRange = maxDuty - minDuty;
 // Constructor
 sg90ctl::sg90ctl(int iGPIOidx/*, sg90ctlCB_t callback*/)
 {
@@ -22,71 +19,61 @@ sg90ctl::sg90ctl(int iGPIOidx/*, sg90ctlCB_t callback*/)
 // Destructor
 sg90ctl::~sg90ctl()
 {
-    //Nothing to do for now
+	
+}
+
+void sg90ctl::CleanUp()
+{
+	gpioPWM(_GPIOidx, 0);
 }
 
 int sg90ctl::initialise()
 {
-	if(isHardwarePWM())
-		return gpioHardwarePWM(_GPIOidx, 0, 0);
-	else
-		return gpioServo(_GPIOidx, 0);
-}
-
-int sg90ctl::getGPIOIdx()
-{
-    return _GPIOidx;
+	int retSts = gpioSetPWMfrequency(getGPIOIdx(), operatingFreq);
+	if (0 == retSts)
+		retSts = gpioSetPWMrange(getGPIOIdx(), maxDuty);
+	if (0 == retSts)
+		retSts = gpioPWM(_GPIOidx, toDutyCycle(0));
+	return retSts;
 }
 
 int sg90ctl::setTargetLocation(double iAngle)
 {
-    if((iAngle < minAngle) || (iAngle > maxAngle)) return 0;
-	if (isHardwarePWM())
-	{
-		double dutyCycle = toDutyCycle(iAngle);
-		return gpioHardwarePWM(_GPIOidx, operatingFreq, dutyCycle);
-	}
-	double pwmAngle = toPWM(iAngle);
-	return gpioServo(_GPIOidx, pwmAngle);
+	return gpioPWM(_GPIOidx, toDutyCycle(iAngle));
 }
 int sg90ctl::moveToLocation(double iAngle)
 {
-	if ((iAngle < minAngle) || (iAngle > maxAngle)) return 0;
-	int retSts = setTargetLocation(iAngle);
-	time_sleep(toPWM(iAngle) * 100 / 1000000);
-	return retSts;
+	if ((iAngle < minAngle) || (iAngle > maxAngle)) return 1;
+	return setTargetLocation(iAngle);
 }
 
-int sg90ctl::getCurrentLocation()
+double sg90ctl::getCurrentLocation()
 {
-	int curWidth = 0;
-	if (isHardwarePWM())
-		curWidth = gpioGetPWMdutycycle(_GPIOidx);
-	else
-		curWidth = gpioGetServoPulsewidth(_GPIOidx);
-	
+	if (!_GPIOidx) return 0;
+	int curWidth = gpioGetPWMdutycycle(_GPIOidx);
+		
 	if (curWidth == PI_BAD_USER_GPIO || curWidth == PI_NOT_SERVO_GPIO) throw "bad configuration";
-	if (_GPIOidx) return toAngle(curWidth);
-    return 0;
+	return toAngle(curWidth);
 }
 
-double sg90ctl::toAngle(double iValue)
+int sg90ctl::move(bool iMovePlus) //Increment one degree
+{
+	double deltaAngle = (iMovePlus) ? 1.0 : -1.0;
+	return moveToLocation(deltaAngle + getCurrentLocation());
+}
+
+double sg90ctl::toAngle(unsigned int iValue)
 {
 	double wrkValue = iValue;
-	if (isHardwarePWM())
-		wrkValue = wrkValue * signalPeriod;
-	return ((wrkValue - minPulse) * angleRange / pulseRange + minAngle);
+	return (wrkValue - minDuty) * angleRange / dutyRange + minAngle;
 }
 
-double sg90ctl::toPWM(double iAngle)
+unsigned int sg90ctl::toDutyCycle(double iAngle)
 {
-	return (minPulse + (iAngle - minAngle) * pulseRange / angleRange);
+	return (minDuty + (iAngle - minAngle) * dutyRange / angleRange);
 }
 
-double sg90ctl::toDutyCycle(double iAngle)
-{
-	return toPWM(iAngle) / signalPeriod;
-}
+
 
 //void sg90ctl::_pwmChangedEXT(int gpio, int level, uint32_t tick, void *user)
 //{

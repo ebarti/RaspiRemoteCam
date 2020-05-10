@@ -102,6 +102,8 @@ int FaceTrackingCamera::ProcessImage(const Mat& iImg, cv::Ptr<cv::Point2f>& oPoi
 	_spTracker->process(grayImg);
 	vector<DetectionBasedTracker::ExtObject> trackedObjects;
 	_spTracker->getObjects(trackedObjects);
+	vector<Rect> objects;
+	_spTracker->getObjects(objects);
 	if (trackedObjects.size() == 0)
 	{
 		_TrackedObjectId = -1;
@@ -127,9 +129,7 @@ int FaceTrackingCamera::ComputeLocation(const vector<DetectionBasedTracker::ExtO
 	for (int ii = 0; ii < facesPresent; ii++)
 	{
 		DetectionBasedTracker::ExtObject itrObj = iObjects[ii];
-		Ptr<Point2f> curTrackedObjPoint;
-		curTrackedObjPoint->x = itrObj.location.x + itrObj.location.width / 2;
-		curTrackedObjPoint->y = itrObj.location.y + itrObj.location.height / 2;
+		Ptr<Point2f> curTrackedObjPoint = makePtr<Point2f>(itrObj.location.x + itrObj.location.width / 2.0, itrObj.location.y + itrObj.location.height / 2);
 		if (itrObj.id == _TrackedObjectId)
 		{
 			oPoint = curTrackedObjPoint;
