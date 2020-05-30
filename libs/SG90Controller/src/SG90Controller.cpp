@@ -2,27 +2,29 @@
 extern "C++" {
 #endif //#ifndef __cplusplus
 
-#include "ControlSystem.h"
+#include "SG90Controller.h"
 #include <pigpio.h>
 #include <chrono>
-ControlSystem::ControlSystem()
+SG90Controller::SG90Controller()
 {
 	// Init pigpio Library
+	_camInitOK = false;
+	_servosInitOK = false;
 	gpioInitialise();
 }
-ControlSystem::~ControlSystem()
+SG90Controller::~SG90Controller()
 {
 	// Terminate library.
 	gpioTerminate();
 }
 
-int ControlSystem::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
+int SG90Controller::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
 {
 	int retSts = 1;
 	if (iTiltGPIOidx && iPanGPIOidx)
 	{
-		_spTiltCtrl = std::make_unique<sg90ctl>(iTiltGPIOidx);
-		_spPanCtrl = std::make_unique<sg90ctl>(iPanGPIOidx);
+		_spTiltCtrl = std::make_unique<sg90ctl>(iTiltGPIOidx, 0.04, 0.1);
+		_spPanCtrl = std::make_unique<sg90ctl>(iPanGPIOidx, 0.04, 0.1);
 		if (nullptr != _spTiltCtrl && nullptr != _spPanCtrl)
 		{
 			retSts = _spTiltCtrl->initialise();
@@ -35,7 +37,7 @@ int ControlSystem::InitializeServos(int iTiltGPIOidx, int iPanGPIOidx)
 	return retSts;
 }
 
-int ControlSystem::InitializeCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale)
+int SG90Controller::InitializeCamera(std::string iCascadePath, std::string iNestedCascadePath, double iScale)
 {
 	int retSts = 1;
 	if (iCascadePath.length() > 0)
@@ -48,7 +50,7 @@ int ControlSystem::InitializeCamera(std::string iCascadePath, std::string iNeste
 	return retSts;
 }
 
-int ControlSystem::ActivateTrackingMode(std::future<void> exitFutureObj)
+int SG90Controller::ActivateTrackingMode(std::future<void> exitFutureObj)
 {
 	if (!_camInitOK || !_servosInitOK) return 1;
 	while (exitFutureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout)
@@ -58,7 +60,7 @@ int ControlSystem::ActivateTrackingMode(std::future<void> exitFutureObj)
 	return 0;
 }
 
-int ControlSystem::ActivateUIMode(std::future<void> exitFutureObj)
+int SG90Controller::ActivateUIMode(std::future<void> exitFutureObj)
 {
 	if (!_camInitOK) return 1;
 	while (exitFutureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout)
@@ -68,7 +70,7 @@ int ControlSystem::ActivateUIMode(std::future<void> exitFutureObj)
 	return 0;
 }
 
-void ControlSystem::Track()
+void SG90Controller::Track()
 {
 	cv::Ptr<cv::Point2f> targetLocation;
 	cv::Mat image;

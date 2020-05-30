@@ -1,19 +1,19 @@
-#ifndef ControlSystem_H
-#define ControlSystem_H
+#ifndef SG90Controller_H
+#define SG90Controller_H
 
 #ifndef __cplusplus // C++ compatibility
 extern "C++" {
 #endif //#ifndef __cplusplus
 
-#include <SG90.h>
-#include <FaceTrackingCamera.h>
+#include "../../SG90/include/SG90.h"
+#include "../../FaceTrackingCamera/include/FaceTrackingCamera.h"
 #include <future>
 
-class ControlSystem
+class SG90Controller
 {
 public:
-	ControlSystem();
-	~ControlSystem();
+	SG90Controller();
+	~SG90Controller();
 	/*
 	@param iTiltGPIOidx:
 		The GPIO index of the tilt servo within the RPI board. The servo must be connected to a USER GPIO, range index = 0-31
@@ -61,4 +61,4 @@ private:
 #ifndef __cplusplus
 }
 #endif //ifndef __cplusplus
-#endif //ifndef ControlSystem_H
+#endif //ifndef SG90Controller_H

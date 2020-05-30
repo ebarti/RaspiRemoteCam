@@ -1,26 +1,25 @@
-#include "ControlSystem.h"
+#include "SG90Controller.h"
 #include <gtest/gtest.h>
-#include <stdlib.h>
 
-class ControlSystemTest : public ::testing::Test
+class SG90ControllerTest : public ::testing::Test
 {
 protected:
 	static void SetUpTestSuite()
 	{
 
-		_spController = std::make_shared<ControlSystem>();
+		_spController = std::make_shared<SG90Controller>();
 	}
 
 	virtual void SetUp()
 	{
 		ASSERT_EQ(nullptr != _spController, true);
 	}
-	static std::shared_ptr<ControlSystem> _spController;
+	static std::shared_ptr<SG90Controller> _spController;
 };
 
-std::shared_ptr<ControlSystem>ControlSystemTest::_spController = nullptr;
+std::shared_ptr<SG90Controller>SG90ControllerTest::_spController = nullptr;
 
-TEST_F(ControlSystemTest, Initialize)
+TEST_F(SG90ControllerTest, Initialize)
 {
 	//NoP
 }

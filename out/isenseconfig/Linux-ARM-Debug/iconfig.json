@@ -918,5 +918,7 @@
     "char": 1
   },
   "wchar_t_type": "unsigned int",
+  "ptrdiff_t_type": "int",
+  "size_t_type": "unsigned int",
   "supports_x86_64": true
 }

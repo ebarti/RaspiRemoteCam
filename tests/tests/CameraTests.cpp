@@ -1,6 +1,5 @@
 #include <FaceTrackingCamera.h>
 #include <gtest/gtest.h>
-#include <stdlib.h>
 #include <opencv2/core/utils/logger.hpp>
 
 class CameraTest : public ::testing::Test

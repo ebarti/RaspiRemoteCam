@@ -1,8 +1,20 @@
 cmake_minimum_required( VERSION 3.15 )
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#include(GoogleTest)
-add_subdirectory("${PROJECT_SOURCE_DIR}/libs/googletest" "libs/googletest")
+
+
+find_library(FaceTrackingCamera
+	NAMES ${CMAKE_SHARED_LIBRARY_PREFIX}FaceTrackingCamera
+	PATHS ${CMAKE_SOURCE_DIR})
+
+find_library(SG90
+	NAMES ${CMAKE_SHARED_LIBRARY_PREFIX}SG90
+	PATHS ${CMAKE_SOURCE_DIR})
+
+find_library(SG90Controller
+	NAMES ${CMAKE_SHARED_LIBRARY_PREFIX}SG90Controller
+	PATHS ${CMAKE_SOURCE_DIR})
+
 macro(package_add_test TESTSOURCE)
     # NOTE: place all tests in cpp files
 	get_filename_component(testName ${TESTSOURCE} NAME_WE)
@@ -10,8 +22,7 @@ macro(package_add_test TESTSOURCE)
 	message("Adding " ${testName})
 	# NOTE: Currently linking all libraries.
 	# TODO: Improve linking
-    target_link_libraries(${testName} gtest gmock gtest_main lib_ControlSystem lib_FaceTrackingCamera lib_SG90)
-	#target_link_libraries(${testName} GTest::GTest lib_ControlSystem lib_FaceTrackingCamera lib_SG90)
+    target_link_libraries(${testName} gtest gmock gtest_main SG90Controller FaceTrackingCamera SG90)
     gtest_discover_tests(${testName}
         WORKING_DIRECTORY ${PROJECT_DIR}
         PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${PROJECT_DIR}"

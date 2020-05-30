@@ -3,7 +3,6 @@
 #ifndef SG90_H
 #define SG90_H
 
-#include <stdint.h>
 
 #ifndef __cplusplus // C++ compatibility
 extern "C++" {
@@ -18,25 +17,26 @@ class sg90ctl
 public:
     //Constructor
     // For a raspberry pi 4, the hardware PWM capable pins are 12, 13, 18, 19
-    sg90ctl(int iGPIOidx);
+    sg90ctl(int iGPIOidx, double iMaxDutyCycleFactor, double iMinDutyCycleFactor);
     ~sg90ctl();
 
     // All return codes are = 0 if succeeded
-    int getGPIOIdx() { return _GPIOidx; };
-    int setTargetLocation(double iAngle);
+    int getGPIOIdx() const { return _GPIOidx; };
 	int moveToLocation(double iAngle);
     double getCurrentLocation();
 	int initialise();
     int move(bool iMovePlus);
     void CleanUp();
-    
 private:
 	
-    bool isHardwarePWM() { return  ((12 == _GPIOidx) || (13 == _GPIOidx) || (18 == _GPIOidx) || (19 == _GPIOidx)) ? 1 : 0; };
-    double toAngle(unsigned int iValue);
-    unsigned int toDutyCycle(double iAngle);
+    int setTargetLocation(double iAngle);
+    bool isHardwarePWM() const { return  ((12 == _GPIOidx) || (13 == _GPIOidx) || (18 == _GPIOidx) || (19 == _GPIOidx)) ? true : false; };
+    double toAngle(unsigned int iValue) const;
+    unsigned int toDutyCycle(double iAngle) const;
 	// Data members
 	int _GPIOidx;
+    double _MaxDutyCycleFactor;
+    double _MinDutyCycleFactor;
 };
 
 #ifndef __cplusplus

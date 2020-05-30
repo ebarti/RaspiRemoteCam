@@ -1,0 +1,31 @@
+cmake_minimum_required( VERSION 3.15 )
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project( SG90Controller)
+
+find_library(FaceTrackingCamera
+	NAMES ${CMAKE_SHARED_LIBRARY_PREFIX}FaceTrackingCamera
+	PATHS ${CMAKE_SOURCE_DIR})
+
+find_library(SG90
+	NAMES ${CMAKE_SHARED_LIBRARY_PREFIX}SG90
+	PATHS ${CMAKE_SOURCE_DIR})
+
+file(GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
+
+add_library (${PROJECT_NAME} SHARED ${HEADER_FILES} ${CPP_FILES} )
+target_link_libraries( ${PROJECT_NAME} PUBLIC SG90 FaceTrackingCamera)
+
+target_include_directories(${PROJECT_NAME}
+	PUBLIC
+		include
+		$<TARGET_PROPERTY:SG90,INCLUDE_DIRECTORIES>
+		$<TARGET_PROPERTY:FaceTrackingCamera,INCLUDE_DIRECTORIES>
+	PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/src
+		
+)
+
+
+

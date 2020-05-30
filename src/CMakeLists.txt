@@ -14,10 +14,7 @@ add_executable( ${BINARY} ${SOURCES} )
 # include files
 target_include_directories(${BINARY}
 	PUBLIC
-		${CMAKE_SOURCE_DIR}/include 
-		${CMAKE_SOURCE_DIR}/src/core 
-		${CMAKE_SOURCE_DIR}/libs/ControlSystem/include 
+		${CMAKE_CURRENT_SOURCE_DIR}/include 
+	PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/src 
 )
-
-#libs
-target_link_libraries( ${BINARY} lib_ControlSystem )

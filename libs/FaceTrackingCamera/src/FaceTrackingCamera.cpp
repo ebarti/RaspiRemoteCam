@@ -10,11 +10,15 @@ using namespace cv;
 // Constructor
 FaceTrackingCamera::FaceTrackingCamera(string iCascadePath, string iNestedCascadePath, bool tstMode)
 {
+	_spTracker = nullptr;
+	_spFaceDetector = nullptr;
+	_spTrackingDetector = nullptr;
 	_tstMode = tstMode;
 	_faceClassifierPath = iCascadePath;
 	_nestedClassifier = iNestedCascadePath;
 	_TrackedObjectId = -1;
 	_TrackingStarted = false;
+	_isInitialized = false;
 }
 
 // Destructor
@@ -45,8 +49,6 @@ int FaceTrackingCamera::Initialize()
 	params.minDetectionPeriod = 0;
 	
 	_spTracker = makePtr<DetectionBasedTracker>(_spFaceDetector, _spTrackingDetector, params);
-	//_spTracker = new DetectionBasedTracker(_spFaceDetector, _spTrackingDetector, params);
-//	_spTrack = makePtr<DetectionBasedTracker>(faceDetector, trackingDetector, params);
 	if (nullptr == _spTracker) return 3;
 	if (!_spTracker->run()) return 4;
 	//Open camera

@@ -1,7 +1,6 @@
 // Public interface for my custom faceTracking class
 #ifndef FaceTrackingCamera_H
 #define FaceTrackingCamera_H
-#include <stdint.h>
 #ifndef __cplusplus // C++ compatibility
 extern "C++" {
 #endif //#ifndef __cplusplus
