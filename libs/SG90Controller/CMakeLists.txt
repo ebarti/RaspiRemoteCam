@@ -1,6 +1,4 @@
 cmake_minimum_required( VERSION 3.15 )
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project( SG90Controller)
 
 find_library(FaceTrackingCamera
@@ -19,13 +17,20 @@ target_link_libraries( ${PROJECT_NAME} PUBLIC SG90 FaceTrackingCamera)
 
 target_include_directories(${PROJECT_NAME}
 	PUBLIC
-		include
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include>  # <prefix>/include/mylib
 		$<TARGET_PROPERTY:SG90,INCLUDE_DIRECTORIES>
 		$<TARGET_PROPERTY:FaceTrackingCamera,INCLUDE_DIRECTORIES>
 	PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		
 )
+set_target_properties(${PROJECT_NAME} PROPERTIES
+			CXX_STANDARD 14
+			CXX_STANDARD_REQUIRED ON
+			EXPORT_PACKAGE_REGISTRY ON
+)
+
 
 
 

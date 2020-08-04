@@ -40,3 +40,9 @@ target_include_directories( ${PROJECT_NAME}
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		${raspicam_INCLUDE_DIRS}
 )
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+			CXX_STANDARD 14
+			CXX_STANDARD_REQUIRED ON
+			EXPORT_PACKAGE_REGISTRY ON
+)

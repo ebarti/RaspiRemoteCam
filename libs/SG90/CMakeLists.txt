@@ -1,6 +1,4 @@
 cmake_minimum_required( VERSION 3.15 )
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project( SG90 VERSION 1.0.0 LANGUAGES CXX)
 
 find_package(pigpio REQUIRED)
@@ -26,4 +24,9 @@ target_include_directories(${PROJECT_NAME}
 		${pigpio_INCLUDE_DIR}
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES
+			CXX_STANDARD 14
+			CXX_STANDARD_REQUIRED ON
+			EXPORT_PACKAGE_REGISTRY ON
+)
 

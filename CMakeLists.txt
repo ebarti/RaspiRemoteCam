@@ -7,11 +7,13 @@ set(CMAKE_HAVE_THREADS_LIBRARY 1)
 set(CMAKE_USE_WIN32_THREADS_INIT 0)
 set(CMAKE_USE_PTHREADS_INIT 1)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-project( RaspiRemoteCam )
 set(CMAKE_SHARED_LIBRARY_PREFIX "lib_")
 
+project( RaspiRemoteCam VERSION 1.0.0 LANGUAGES CXX)
+
+add_subdirectory(extern/googletest)
+add_subdirectory(extern/pigpio)
 add_subdirectory( libs )
-add_subdirectory( libs/googletest )
 add_subdirectory( src )
 
 option(BUILD_TESTS "Build associated tests" ON)
@@ -20,4 +22,7 @@ if(BUILD_TESTS)
     include(GoogleTest)
     add_subdirectory(tests)
 endif()
+
+
+
 
